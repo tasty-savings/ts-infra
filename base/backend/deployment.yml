@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: tasty-savings-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasty-savings-backend
+  template:
+    metadata:
+      labels:
+        app: tasty-savings-backend
+    spec:
+      containers:
+      - name: backend
+        image: openjdk:17-jdk-slim
+        args: ["-jar", "/app/spring-app.jar"]
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        volumeMounts:
+        - name: spring-app-volume
+          mountPath: /app
