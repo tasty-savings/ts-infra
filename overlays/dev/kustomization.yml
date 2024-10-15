@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: Deployment
+      name: backend-deployment
+      namespace: backend-deployment
+    path: backend/deployment-patch.yml
+  - target:
+      kind: Deployment
+      name: frontend-deployment
+      namespace: frontend-deployment
+    path: frontend/deployment-patch.yml
+  - target:
+      kind: Service
+      name: backend-service
+      namespace: backend-service
+    path: backend/service-patch.yml
+  - target:
+      kind: Service
+      name: frontend-service
+      namespace: frontend-service
+    path: frontend/service-patch.yml
