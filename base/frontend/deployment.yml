@@ -20,5 +20,5 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: frontend-app-volume
+        - name: frontend-config
           mountPath: /usr/share/nginx/html
