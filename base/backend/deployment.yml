@@ -25,4 +25,8 @@ spec:
           value: "prod"
         volumeMounts:
         - name: backend-config
-          mountPath: /app
+          mountPath: /app/config
+      volumes:
+      - name: backend-config
+        configMap:
+          name: backend-config
