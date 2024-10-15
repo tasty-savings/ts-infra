@@ -5,11 +5,10 @@ metadata:
   labels:
     app: tasty-savings-backend
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: tasty-savings-backend
   ports:
   - protocol: TCP
     port: 8080
     targetPort: 8080
-    nodePort: 30080
