@@ -16,13 +16,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: nginx:latest
+        image: ssssuji/tasty-savings-frontend:latest
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: frontend-config
-          mountPath: /usr/share/nginx/html
-      volumes:
-      - name: frontend-config
-        configMap:
-          name: frontend-config
