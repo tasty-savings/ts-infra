@@ -5,6 +5,7 @@ resources:
   - ../../base
   - namespace.yml
   - nginx/ingress.yml
+  - argocd/argocd-server-nodeport.yml
 
 helmCharts:
   - name: ingress-nginx
@@ -29,7 +30,17 @@ helmCharts:
           cors-allow-methods: "GET, POST, PUT, DELETE"
           cors-allow-headers: "Authorization, Content-Type"
           cors-allow-credentials: "true"
-
+  - name: argo-cd
+    releaseName: argocd
+    namespace: argocd
+    version: 5.29.1 # 원하는 ArgoCD Helm 차트 버전
+    repo: https://argoproj.github.io/argo-helm
+    valuesInline:
+      server:
+        service:
+          type: ClusterIP  # 필요한 경우 NodePort나 LoadBalancer로 변경
+      controller:
+        replicaCount: 1
 patches:
   - target:
       kind: Deployment
