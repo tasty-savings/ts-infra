@@ -1421,7 +1421,9 @@ server:
   # -- Argo CD server name
   name: server
 
-  
+  # enable helm
+  config:
+    kustomize.buildOptions: --enable-helm=true
 
   # -- The number of server pods to run
   replicas: 1
