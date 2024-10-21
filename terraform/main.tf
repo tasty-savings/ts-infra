@@ -99,39 +99,39 @@ resource "aws_security_group" "ts-sg" {
   }
   
   ingress {
-	  from_port   = 8080
-	  to_port     = 8080
-	  protocol    = "tcp"
-	  cidr_blocks = ["0.0.0.0/0"]
-	}
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 	
-	ingress {
-	  from_port   = 3306
-	  to_port     = 3306
-	  protocol    = "tcp"
-	  cidr_blocks = ["0.0.0.0/0"]
-	}
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 	
-	ingress {
-	  from_port   = 80
-	  to_port     = 80
-	  protocol    = "tcp"
-	  cidr_blocks = ["0.0.0.0/0"]
-	}
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 	
-	ingress {
-	  from_port   = 443
-	  to_port     = 443
-	  protocol    = "tcp"
-	  cidr_blocks = ["0.0.0.0/0"]
-	}
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 	
-	ingress {
-	  from_port   = 5000
-	  to_port     = 5000
-	  protocol    = "tcp"
-	  cidr_blocks = ["0.0.0.0/0"]
-	}
+  ingress {
+    from_port   = 5000
+    to_port     = 5000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 	
   egress {
     from_port   = 0
@@ -146,11 +146,11 @@ resource "aws_security_group" "ts-sg" {
 }
 
 resource "aws_instance" "ts_backend" {
-	count         = 2
+  count         = 2
   ami           = "ami-062cf18d655c0b1e8"
   instance_type = "t2.medium"
   key_name      = "?"  
-	subnet_id     = aws_subnet.ts_private_subnet.id
+  subnet_id     = aws_subnet.ts_private_subnet.id
   vpc_security_group_ids = [aws_security_group.ts-sg.id]
   associate_public_ip_address = false
 
@@ -160,7 +160,7 @@ resource "aws_instance" "ts_backend" {
 }
 
 resource "aws_instance" "ts_frontend" {
-	count         = 2
+  count         = 2
   ami           = "ami-062cf18d655c0b1e8"
   instance_type = "t2.medium"
   key_name      = "?"  
@@ -173,7 +173,7 @@ resource "aws_instance" "ts_frontend" {
 }
 
 resource "aws_instance" "ts_ai" {
-	count         = 2
+  count         = 2
   ami           = "ami-062cf18d655c0b1e8"
   instance_type = "t2.medium"
   key_name      = "?"
