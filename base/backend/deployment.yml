@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: openjdk:17-jdk-slim
-        args: ["-jar", "/app/spring-app.jar"]
+        image: ssssuji/tasty-savings-backend:latest
         ports:
         - containerPort: 8080
         env:
