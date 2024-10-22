@@ -7,6 +7,14 @@ resources:
   - nginx/ingress.yml
   - argocd/argocd-server-nodeport.yml
 
+images:
+- name: mo991207/ts-back  # 기존 이미지 이름
+  newName: mo991207/ts-back  # 새로운 이미지 이름
+  newTag: v1.0.1
+- name: mo991207/ts-front
+  newName: mo991207/ts-front
+  newTag: v1.0.1
+
 helmCharts:
   - name: ingress-nginx
     releaseName: ingress-nginx

@@ -8,9 +8,10 @@ spec:
     spec:
       containers:
         - name: backend
+          imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "dev" 
+              value: "local" 
           resources:
             limits:
               memory: "256Mi" 
