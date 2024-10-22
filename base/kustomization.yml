@@ -15,7 +15,7 @@ helmCharts:
 
 resources:
   - namespace.yml
-  - config/aws-secret.yml
+#  - config/aws-secret.yml
   - config/secret-store.yml
   - config/external-secret.yml
   - backend/deployment.yml
