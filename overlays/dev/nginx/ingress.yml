@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "39a7-119-198-205-106.ngrok-free.app"
+  - host: "8fe0-211-244-225-211.ngrok-free.app"
     http:
       paths:
       - path: /api
