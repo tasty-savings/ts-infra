@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ssssuji/tasty-savings-frontend:latest
+        image: mo991207/ts-front:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
