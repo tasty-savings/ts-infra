@@ -16,16 +16,55 @@ spec:
     spec:
       containers:
       - name: backend
-        image: ssssuji/tasty-savings-backend:latest
+        image: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: "prod"
-        volumeMounts:
-        - name: backend-config
-          mountPath: /app/config
-      volumes:
-      - name: backend-config
-        configMap:
-          name: backend-config
+          value: "local"
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: datasource-url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: datasource-username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: datasource-password
+        - name: HIBERNATE_FORMAT_SQL
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: hibernate-format-sql
+        - name: HIBERNATE_GENERATE_DDL
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: hibernate-generate-ddl
+        - name: SHOW_SQL
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: show-sql
+        - name: KAKAO_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: kakao-client-id
+        - name: KAKAO_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: kakao-client-secret
+        - name: KAKAO_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: kakao-redirect-uri
