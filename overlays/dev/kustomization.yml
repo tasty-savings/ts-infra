@@ -8,12 +8,12 @@ resources:
   - argocd/argocd-server-nodeport.yml
 
 images:
-- name: mo991207/ts-back  # 기존 이미지 이름
-  newName: mo991207/ts-back  # 새로운 이미지 이름
-  newTag: v1.0.1
-- name: mo991207/ts-front
-  newName: mo991207/ts-front
-  newTag: v1.0.1
+- name: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-backend  # 기존 이미지 이름
+  newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-backend  # 새로운 이미지 이름
+  newTag: 30
+- name: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-frontend
+  newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-frontend
+  newTag: 30
 
 helmCharts:
   - name: ingress-nginx
@@ -34,7 +34,7 @@ helmCharts:
             https: 443 # HTTPS TargetPort 설정
         config:
           enable-cors: "true"
-          cors-allow-origin: "https://39a7-119-198-205-106.ngrok-free.app"
+          cors-allow-origin: "https://8fe0-211-244-225-211.ngrok-free.app"
           cors-allow-methods: "GET, POST, PUT, DELETE"
           cors-allow-headers: "Authorization, Content-Type"
           cors-allow-credentials: "true"
