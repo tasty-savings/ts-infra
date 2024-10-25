@@ -68,9 +68,6 @@ spec:
             secretKeyRef:
               name: ts-config-secrets
               key: kakao-redirect-uri
-<<<<<<< HEAD
-=======
 
       imagePullSecrets:
       - name: ecr-registry-secret  # AWS ECR 로그인 시 사용할 Secret 추가
->>>>>>> e0915cb (Feat: ECR login secret 생성 및 imagePullSecrets로 인증 정보 제공)
