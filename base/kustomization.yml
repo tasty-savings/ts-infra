@@ -15,8 +15,9 @@ helmCharts:
 
 resources:
   - namespace.yml
-  - config/ecr-secret.yaml
-#  - config/aws-secret.yml
+  # - config/ecr-secret.yaml
+#   - config/ecr-token-refresh.yml
+# #  - config/aws-secret.yml
   - config/secret-store.yml
   - config/external-secret.yml
   - backend/deployment.yml

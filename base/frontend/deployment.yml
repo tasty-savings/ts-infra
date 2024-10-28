@@ -16,10 +16,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-frontend:30
+        image: mo991207/ts-front:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
 
-      imagePullSecrets:
-      - name: ecr-registry-secret  # AWS ECR 로그인 시 사용할 Secret 추가
