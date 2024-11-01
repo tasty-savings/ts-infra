@@ -8,11 +8,11 @@ resources:
   - argocd/argocd-server-nodeport.yml
 
 images:
-- name: mo991207/ts-back  # 기존 이미지 이름
-  newName: mo991207/ts-back  # 새로운 이미지 이름
-  newTag: v1.0.2
-- name: mo991207/ts-front
-  newName: mo991207/ts-front
+- name: ssssuji/ts-back  # 기존 이미지 이름
+  newName: ssssuji/ts-back  # 새로운 이미지 이름
+  newTag: new2
+- name: ssssuji/ts-front
+  newName: ssssuji/ts-front
   newTag: latest
 
 helmCharts:
