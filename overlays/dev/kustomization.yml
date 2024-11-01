@@ -13,7 +13,7 @@ images:
   newTag: new2
 - name: ssssuji/ts-front
   newName: ssssuji/ts-front
-  newTag: latest
+
 
 helmCharts:
   - name: ingress-nginx
