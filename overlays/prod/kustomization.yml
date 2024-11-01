@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - namespace.yml
+  # - argocd/argocd-server-nodeport.yml
+  # - alb/ingress.yml
+
+images:
+- name: mo991207/ts-back  # 기존 이미지 이름 -> base 리소스 , 기존 실행되던 이미지이름
+  newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-backend  # 새로운 이미지 이름
+  newTag: "75"
+- name: mo991207/ts-front
+  newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-frontend
+  newTag: "101"
+
+helmCharts:
+  - name: argo-cd
+    releaseName: argocd
+    namespace: argocd
+    version: 5.29.1 # 원하는 ArgoCD Helm 차트 버전
+    repo: https://argoproj.github.io/argo-helm
+    valuesInline:
+      server:
+        service:
+          type: ClusterIP  # 필요한 경우 NodePort나 LoadBalancer로 변경
+      controller:
+        replicaCount: 1
+patches:
+  - target:
+      kind: Deployment
+      name: backend-deployment
+      namespace: backend-deployment
+    path: backend/deployment-patch.yml
+  - target:
+      kind: Deployment
+      name: frontend-deployment
+      namespace: frontend-deployment
+    path: frontend/deployment-patch.yml
+  - target:
+      kind: Service
+      name: backend-service
+      namespace: backend-service
+    path: backend/service-patch.yml
+  - target:
+      kind: Service
+      name: frontend-service
+      namespace: frontend-service
+    path: frontend/service-patch.yml
+
+  
