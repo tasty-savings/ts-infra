@@ -10,27 +10,51 @@ resource "aws_vpc" "ts-vpc" {
   }
 }
 
-resource "aws_subnet" "ts-subnet" {
-  vpc_id            = aws_vpc.main.id  
+# Subnets for Availability Zone A
+resource "aws_subnet" "ts-public-subnet-a" {
+  vpc_id            = aws_vpc.ts-vpc.id  
   cidr_block        = "192.169.1.0/24" 
   availability_zone = "ap-northeast-2a"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "ts-subnet"
+    Name = "ts-public-subnet-a"
   }
 }
 
-resource "aws_subnet" "ts_private_subnet" {
+resource "aws_subnet" "ts-private-subnet-a" {
   vpc_id            = aws_vpc.ts-vpc.id
   cidr_block        = "192.169.2.0/24"
   availability_zone = "ap-northeast-2a"
 
   tags = {
-    Name = "ts-private-subnet"
+    Name = "ts-private-subnet-a"
   }
 }
 
+# Subnets for Availability Zone B
+resource "aws_subnet" "ts-public-subnet-b" {
+  vpc_id            = aws_vpc.ts-vpc.id  
+  cidr_block        = "192.169.3.0/24" 
+  availability_zone = "ap-northeast-2b"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "ts-public-subnet-b"
+  }
+}
+
+resource "aws_subnet" "ts-private-subnet-b" {
+  vpc_id            = aws_vpc.ts-vpc.id
+  cidr_block        = "192.169.4.0/24"
+  availability_zone = "ap-northeast-2b"
+
+  tags = {
+    Name = "ts-private-subnet-b"
+  }
+}
+
+# Internet Gateway
 resource "aws_internet_gateway" "ts-igw" {
   vpc_id = aws_vpc.ts-vpc.id
 
@@ -39,20 +63,22 @@ resource "aws_internet_gateway" "ts-igw" {
   }
 }
 
-resource "aws_eip" "ts_nat_eip" {
-  vpc = true
+# NAT Gateway in public subnet in AZ A
+resource "aws_eip" "ts-nat-eip" {
+  domain = "vpc"
 }
 
-resource "aws_nat_gateway" "ts_nat_gateway" {
-  allocation_id = aws_eip.ts_nat_eip.id
-  subnet_id     = aws_subnet.ts_subnet.id
+resource "aws_nat_gateway" "ts-nat-gateway" {
+  allocation_id = aws_eip.ts-nat-eip.id
+  subnet_id     = aws_subnet.ts-public-subnet-a.id
 
   tags = {
     Name = "ts-nat-gateway"
   }
 }
 
-resource "aws_route_table" "ts-public_rt" {
+# Public Route Tables
+resource "aws_route_table" "ts-public-rt-a" {
   vpc_id = aws_vpc.ts-vpc.id
 
   route {
@@ -61,148 +87,67 @@ resource "aws_route_table" "ts-public_rt" {
   }
 
   tags = {
-    Name = "ts-public-route-table"
+    Name = "ts-public-route-table-a"
   }
 }
 
-resource "aws_route_table_association" "ts_public_rta" {
-  subnet_id      = aws_subnet.ts_subnet.id
-  route_table_id = aws_route_table.ts_public_rt.id
-}
-
-resource "aws_route_table" "ts_private_rt" {
+resource "aws_route_table" "ts-public-rt-b" {
   vpc_id = aws_vpc.ts-vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.ts_nat_gateway.id
+    gateway_id = aws_internet_gateway.ts-igw.id
   }
 
   tags = {
-    Name = "ts-private-route-table"
+    Name = "ts-public-route-table-b"
   }
 }
 
-resource "aws_route_table_association" "ts_private_rta" {
-  subnet_id      = aws_subnet.ts_private_subnet.id
-  route_table_id = aws_route_table.ts_private_rt.id
-}
-
-resource "aws_security_group" "ts-sg" {
+# Private Route Tables
+resource "aws_route_table" "ts-private-rt-a" {
   vpc_id = aws_vpc.ts-vpc.id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-	
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-	
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-	
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-	
-  ingress {
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-	
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.ts-nat-gateway.id
   }
 
   tags = {
-    Name = "ts-sg"
+    Name = "ts-private-route-table-a"
   }
 }
 
-resource "aws_instance" "ts_backend" {
-  count         = 2
-  ami           = "ami-062cf18d655c0b1e8"
-  instance_type = "t2.medium"
-  key_name      = "?"  
-  subnet_id     = aws_subnet.ts_private_subnet.id
-  vpc_security_group_ids = [aws_security_group.ts-sg.id]
-  associate_public_ip_address = false
+resource "aws_route_table" "ts-private-rt-b" {
+  vpc_id = aws_vpc.ts-vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.ts-nat-gateway.id
+  }
 
   tags = {
-    Name = "TS Backend ${count.index + 1}"
+    Name = "ts-private-route-table-b"
   }
 }
 
-resource "aws_instance" "ts_frontend" {
-  count         = 2
-  ami           = "ami-062cf18d655c0b1e8"
-  instance_type = "t2.medium"
-  key_name      = "?"  
-  subnet_id     = aws_subnet.ts-subnet.id
-  vpc_security_group_ids = [aws_security_group.ts-sg.id]
-
-  tags = {
-    Name = "TS Frontend ${count.index + 1}"
-  }
+# Route Table Associations
+resource "aws_route_table_association" "ts-public-rta-a" {
+  subnet_id      = aws_subnet.ts-public-subnet-a.id
+  route_table_id = aws_route_table.ts-public-rt-a.id
 }
 
-resource "aws_instance" "ts_ai" {
-  count         = 2
-  ami           = "ami-062cf18d655c0b1e8"
-  instance_type = "t2.medium"
-  key_name      = "?"
-  subnet_id     = aws_subnet.ts-subnet.id
-  vpc_security_group_ids = [aws_security_group.ts-sg.id]
-
-  tags = {
-    Name = "TS AI ${count.index + 1}"
-  }
+resource "aws_route_table_association" "ts-public-rta-b" {
+  subnet_id      = aws_subnet.ts-public-subnet-b.id
+  route_table_id = aws_route_table.ts-public-rt-b.id
 }
 
-resource "aws_instance" "ts_jenkins" {
-  ami           = "ami-062cf18d655c0b1e8"
-  instance_type = "t2.medium"
-  key_name      = "?"
-  subnet_id     = aws_subnet.ts-subnet.id
-  vpc_security_group_ids = [aws_security_group.ts-sg.id]
-
-  tags = {
-    Name = "TS Jenkins"
-  }
+resource "aws_route_table_association" "ts-private-rta-a" {
+  subnet_id      = aws_subnet.ts-private-subnet-a.id
+  route_table_id = aws_route_table.ts-private-rt-a.id
 }
 
-output "instance_ips" {
-  value = {
-    backend  = [for i in aws_instance.ts_backend : i.private_ip]
-    frontend = [for i in aws_instance.ts_frontend : i.public_ip]
-    ai       = [for i in aws_instance.ts_ai : i.public_ip]
-    jenkins  = aws_instance.ts_jenkins.public_ip
-  }
+resource "aws_route_table_association" "ts-private-rta-b" {
+  subnet_id      = aws_subnet.ts-private-subnet-b.id
+  route_table_id = aws_route_table.ts-private-rt-b.id
 }
-

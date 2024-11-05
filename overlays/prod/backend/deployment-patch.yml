@@ -5,18 +5,24 @@ metadata:
   labels:
     app: tasty-savings-backend
 spec:
-  replicas: 3
+  replicas: 2
   template:
     spec:
+      nodeSelector:
+        role: backend
       containers:
         - name: backend
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "prod"
-          resources:
-            limits:
-              memory: "512Mi"
-              cpu: "1000m"
-            requests:
-              memory: "256Mi"
-              cpu: "500m"
+              value: "production"
+          # resources:
+          #   limits:
+          #     memory: "512Mi"
+          #     cpu: "1000m"
+          #   requests:
+          #     memory: "256Mi"
+          #     cpu: "500m"
+          tolerations:
+            - key: "role"
+              value: "backend"
+              effect: "NoSchedule"

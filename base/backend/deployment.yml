@@ -5,21 +5,34 @@ metadata:
   labels:
     app: tasty-savings-backend
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: tasty-savings-backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 # 배포 중 사용할 수 없는 최대 파드 수
+      maxSurge: 1 # 배포 중 추가 생성할 수 있는 최대 파드 수
   template:
     metadata:
       labels:
         app: tasty-savings-backend
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
       - name: backend
-        image: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-backend:latest
+        image: ssssuji/ts-back:new2
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /api/healthcheck # 헬스체크 경로
+            port: 8080
+          initialDelaySeconds: 20 # 컨테이너 시작 후 첫 체크까지 대기 시간
+          periodSeconds: 10 # 헬스 체크 간격
+          timeoutSeconds: 3 # 체크 타임 아웃 설정
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "local"
@@ -68,3 +81,4 @@ spec:
             secretKeyRef:
               name: ts-config-secrets
               key: kakao-redirect-uri
+

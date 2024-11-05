@@ -8,12 +8,18 @@ spec:
   replicas: 2
   template:
     spec:
+      nodeSelector:
+        role: frontend
       containers:
         - name: frontend
-          resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
-            requests:
-              memory: "128Mi"
-              cpu: "250m"
+          # resources:
+          #   limits:
+          #     memory: "256Mi"
+          #     cpu: "500m"
+          #   requests:
+          #     memory: "128Mi"
+          #     cpu: "250m"
+          tolerations:
+            - key: "role"
+              value: "frontend"
+              effect: "NoSchedule"
