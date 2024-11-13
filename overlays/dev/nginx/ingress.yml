@@ -18,6 +18,13 @@ spec:
             name: backend-service
             port:
               number: 8080
+      - path: /ai
+        pathType: Prefix
+        backend:
+          service:
+            name: ai-service
+            port:
+              number: 5555
       - path: /
         pathType: Prefix
         backend:
