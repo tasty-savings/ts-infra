@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tasty-savings-frontend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: tasty-savings-frontend
@@ -33,3 +33,4 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 3
+        

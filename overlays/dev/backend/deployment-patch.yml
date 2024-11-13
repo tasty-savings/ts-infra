@@ -13,10 +13,9 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "local" 
           resources:
-            limits:
-              memory: "256Mi" 
-              cpu: "500m"
             requests:
-              memory: "128Mi"
-              cpu: "250m"
-
+              cpu: 125m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tasty-savings-backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: tasty-savings-backend
@@ -26,13 +26,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
-        readinessProbe:
-          httpGet:
-            path: /api/healthcheck # 헬스체크 경로
-            port: 8080
-          initialDelaySeconds: 20 # 컨테이너 시작 후 첫 체크까지 대기 시간
-          periodSeconds: 10 # 헬스 체크 간격
-          timeoutSeconds: 3 # 체크 타임 아웃 설정
+        # readinessProbe:
+        #   httpGet:
+        #     path: /api/healthcheck # 헬스체크 경로
+        #     port: 8080
+        #   initialDelaySeconds: 20 # 컨테이너 시작 후 첫 체크까지 대기 시간
+        #   periodSeconds: 10 # 헬스 체크 간격
+        #   timeoutSeconds: 3 # 체크 타임 아웃 설정
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "local"
@@ -81,4 +81,3 @@ spec:
             secretKeyRef:
               name: ts-config-secrets
               key: kakao-redirect-uri
-

@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backend-load-test
+spec:
+  template:
+    spec:
+      containers:
+      - name: k6
+        image: grafana/k6:latest
+        args:
+          - run
+          - /scripts/load-test.js  # ConfigMap에 저장된 스크립트 파일 경로
+        volumeMounts:
+        - name: k6-script
+          mountPath: /scripts
+      restartPolicy: Never
+      volumes:
+      - name: k6-script
+        configMap:
+          name: k6-load-test-script
+

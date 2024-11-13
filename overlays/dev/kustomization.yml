@@ -6,6 +6,8 @@ resources:
   - namespace.yml
   - nginx/ingress.yml
   - argocd/argocd-server-nodeport.yml
+  - backend/backend-hpa.yml
+  - frontend/frontend-hpa.yml
 
 images:
 - name: ssssuji/ts-back  # 기존 이미지 이름
@@ -52,20 +54,20 @@ patches:
   - target:
       kind: Deployment
       name: backend-deployment
-      namespace: backend-deployment
+      namespace: default
     path: backend/deployment-patch.yml
   - target:
       kind: Deployment
       name: frontend-deployment
-      namespace: frontend-deployment
+      namespace: default
     path: frontend/deployment-patch.yml
   - target:
       kind: Service
       name: backend-service
-      namespace: backend-service
+      namespace: default
     path: backend/service-patch.yml
   - target:
       kind: Service
       name: frontend-service
-      namespace: frontend-service
+      namespace: default
     path: frontend/service-patch.yml
