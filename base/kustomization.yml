@@ -24,6 +24,8 @@ resources:
   - backend/service.yml
   - frontend/deployment.yml
   - frontend/service.yml
+  - ai/deployment.yml
+  - ai/service.yml
 
 # commonLabels:
 #   app: tasty-savings

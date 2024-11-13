@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tasty-savings-backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: tasty-savings-backend
@@ -81,4 +81,5 @@ spec:
             secretKeyRef:
               name: ts-config-secrets
               key: kakao-redirect-uri
-
+      imagePullSecrets:
+      - name: ecr-registry-secret
