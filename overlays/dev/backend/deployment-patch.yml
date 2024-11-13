@@ -7,16 +7,42 @@ spec:
   template:
     spec:
       containers:
-        - name: backend
-          imagePullPolicy: Always
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "local" 
-          resources:
-            limits:
-              memory: "256Mi" 
-              cpu: "500m"
-            requests:
-              memory: "128Mi"
-              cpu: "250m"
-
+      - name: backend
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "256Mi" 
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "local" 
+        - name: KAKAO_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: kakao-redirect-uri
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: redis-port
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: redis-host
+      - name: redis
+        image: redis:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "125m"
+          requests:
+            memory: "64Mi"
+            cpu: "125m"

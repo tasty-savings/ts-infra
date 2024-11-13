@@ -8,9 +8,6 @@ spec:
       containers:
         - name: frontend
           imagePullPolicy: Always
-          env:
-            - name: ENVIRONMENT
-              value: "development" 
           resources:
             limits:
               memory: "128Mi"
