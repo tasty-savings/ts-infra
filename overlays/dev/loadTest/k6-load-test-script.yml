@@ -11,4 +11,3 @@ data:
       http.get('http://backend-service.default.svc.cluster.local:8080');
       sleep(1);
     }
-

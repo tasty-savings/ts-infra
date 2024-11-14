@@ -19,4 +19,3 @@ spec:
       - name: k6-script
         configMap:
           name: k6-load-test-script
-

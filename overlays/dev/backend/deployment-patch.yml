@@ -14,8 +14,8 @@ spec:
               value: "local" 
           resources:
             requests:
-              cpu: 125m
-              memory: 64Mi
+              cpu: 250m 
+              memory: 128Mi 
             limits:
-              cpu: 250m
-              memory: 128Mi
+              cpu: 500m
+              memory: 256Mi
