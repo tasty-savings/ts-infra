@@ -15,6 +15,12 @@ spec:
       - name: backend
         image: ssssuji/ts-back:new2
         imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /api/healthcheck # 헬스체크 경로
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5 
         ports:
         - containerPort: 8080
         env:

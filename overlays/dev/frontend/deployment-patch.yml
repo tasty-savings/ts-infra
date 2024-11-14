@@ -3,8 +3,17 @@ kind: Deployment
 metadata:
   name: frontend-deployment 
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 # 배포 중 사용할 수 없는 최대 파드 수
+      maxSurge: 1 # 배포 중 추가 생성할 수 있는 최대 파드 수
   template:
+    metadata:
+      labels:
+        app: tasty-savings-frontend
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
         - name: frontend
           imagePullPolicy: Always
@@ -18,3 +27,7 @@ spec:
             limits:
               cpu: 250m
               memory: 128Mi
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
