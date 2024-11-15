@@ -17,10 +17,14 @@ spec:
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
-            path: /api/healthcheck # 헬스체크 경로
+            path: /api/healthcheck
             port: 8080
           initialDelaySeconds: 10
           periodSeconds: 5 
+        livenessProbe:
+          httpGet:
+            path: /api/healthcheck
+            port: 8080
         ports:
         - containerPort: 8080
         env:
