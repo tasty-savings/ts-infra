@@ -22,12 +22,17 @@ spec:
               value: "development" 
           resources:
             requests:
-              cpu: 125m
-              memory: 64Mi
+              cpu: "125m"
+              memory: "64Mi"
             limits:
-              cpu: 250m
-              memory: 128Mi
+              cpu: "250m"
+              memory: "128Mi"
           readinessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 3
+          livenessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
