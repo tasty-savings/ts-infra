@@ -18,10 +18,12 @@ spec:
         readinessProbe:
           httpGet:
             path: /api/healthcheck
+            scheme: HTTP
             port: 8080
         livenessProbe:
           httpGet:
             path: /api/healthcheck
+            scheme: HTTP
             port: 8080
         ports:
         - containerPort: 8080
