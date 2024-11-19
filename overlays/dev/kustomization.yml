@@ -52,6 +52,9 @@ helmCharts:
           type: ClusterIP  # 필요한 경우 NodePort나 LoadBalancer로 변경
       controller:
         replicaCount: 1
+      configs:
+        cm:
+          kustomize.buildOptions: "--enable-helm"
 patches:
   - target:
       kind: Deployment
