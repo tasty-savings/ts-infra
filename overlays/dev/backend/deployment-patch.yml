@@ -24,7 +24,7 @@ spec:
           resources:
             requests:
               cpu: "250m"
-              memory: "128Mi"
+              memory: "256Mi"
             limits:
               cpu: "500m"
               memory: "512Mi"
@@ -33,11 +33,12 @@ spec:
               exec:
                 command: ["sh", "-c", "sleep 10"]
           readinessProbe:
-            initialDelaySeconds: 30
+            initialDelaySeconds: 40
             periodSeconds: 10
             timeoutSeconds: 3
+            failureThreshold: 5
           livenessProbe:
-            initialDelaySeconds: 30
+            initialDelaySeconds: 40
             periodSeconds: 10
             timeoutSeconds: 3
-            failureThreshold: 3
+            failureThreshold: 5
