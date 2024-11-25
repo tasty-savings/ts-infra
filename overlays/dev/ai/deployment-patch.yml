@@ -30,3 +30,18 @@ spec:
             secretKeyRef:
               name: ts-config-secrets
               key: openai-api-key
+        - name: MONGO_DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: mongo-db-url
+        - name: MONGO_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: mongo-db-name
+        - name: RECIPE_API
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: recipe-api
