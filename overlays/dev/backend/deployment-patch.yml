@@ -38,7 +38,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: ts-config-secrets
-              key: mongo-db-url
+              key: mongo-db-url-spring
       - name: redis
         image: redis:latest
         imagePullPolicy: Always
