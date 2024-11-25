@@ -16,7 +16,7 @@ images:
   newTag: "101"
 - name: mo991207/ts-ai
   newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-ai
-  newTag: "27"
+  newTag: "36"
 
 helmCharts:
   - name: ingress-nginx
@@ -91,3 +91,8 @@ patches:
       name: ts-config-secrets
       namespace: default
     path: config/external-secret-patch.yml
+  - target:
+      kind: SecretStore
+      name: aws-paramstore
+      namespace: default
+    path: config/secret-store-patch.yml

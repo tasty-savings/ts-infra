@@ -26,6 +26,11 @@ resources:
   - frontend/service.yml
   - ai/deployment.yml
   - ai/service.yml
+  - db/mongodb-backup-pv.yml
+  - db/mongodb-pv.yml
+  - db/configmap.yml
+  - db/mongodb-deployment.yml
+  - db/mongodb-service.yml
 
 # commonLabels:
 #   app: tasty-savings
