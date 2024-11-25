@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-backup-pv
+spec:
+  capacity:
+    storage: 128Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: "/Users/mochang-il/Documents/ktb/TSP/mongo-tasty-saving-backup"  # BSON 파일이 저장된 백업 경로
+    type: DirectoryOrCreate  # hostPathType을 DirectoryOrCreate로 설정
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-backup-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: manual  # PVC의 storageClassName도 manual로 설정
