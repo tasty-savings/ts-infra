@@ -1,0 +1,16 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass # Provisioner
+metadata:
+  name: default
+spec:
+  amiFamily: AL2
+  role: "ts-karpenter-role" # arn:aws:iam::<ACCOUNT_ID>:role/ts-karpenter-role
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "ts-karpenter"
+      availabilityZones: ["ap-northeast-2a", "ap-northeast-2b"]
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "ts-karpenter"
+  amiSelectorTerms:
+    - id: "ami-090a5c6f86b8b8c75"
