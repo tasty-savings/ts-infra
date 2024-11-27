@@ -16,7 +16,7 @@ images:
   newTag: "104"
 - name: mo991207/ts-ai
   newName: ssssuji/ts-ai
-  newTag: "40"
+  newTag: "50"
 
 helmCharts:
   - name: ingress-nginx
