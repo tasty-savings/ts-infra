@@ -39,6 +39,11 @@ spec:
             secretKeyRef:
               name: ts-config-secrets
               key: mongo-db-url-spring
+        - name: AI_HOST
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: ai-host
       - name: redis
         image: redis:latest
         imagePullPolicy: Always
