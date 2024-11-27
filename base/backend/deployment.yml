@@ -28,11 +28,14 @@ spec:
         - containerPort: 8080
         readinessProbe:
           httpGet:
-            path: /api/healthcheck # 헬스체크 경로
+            path: /api/healthcheck
+            scheme: HTTP
             port: 8080
-          initialDelaySeconds: 20 # 컨테이너 시작 후 첫 체크까지 대기 시간
-          periodSeconds: 10 # 헬스 체크 간격
-          timeoutSeconds: 3 # 체크 타임 아웃 설정
+        livenessProbe:
+          httpGet:
+            path: /api/healthcheck
+            scheme: HTTP
+            port: 8080
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "local"
