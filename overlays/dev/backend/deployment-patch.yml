@@ -4,50 +4,78 @@ metadata:
   name: backend-deployment 
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 # 배포 중 사용할 수 없는 최대 파드 수
+      maxSurge: 1 # 배포 중 추가 생성할 수 있는 최대 파드 수
   template:
+    metadata:
+      labels:
+        app: tasty-savings-backend
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
-      - name: backend
-        imagePullPolicy: Always
-        resources:
-          limits:
-            memory: "512Mi" # over 256 
-            cpu: "500m"
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: "local" 
-        - name: KAKAO_REDIRECT_URI
-          valueFrom:
-            secretKeyRef:
-              name: ts-config-secrets
-              key: kakao-redirect-uri
-        - name: REDIS_PORT
-          valueFrom:
-            secretKeyRef:
-              name: ts-config-secrets
-              key: redis-port
-        - name: REDIS_HOST
-          valueFrom:
-            secretKeyRef:
-              name: ts-config-secrets
-              key: redis-host
-        - name: MONGO_URL
-          valueFrom:
-            secretKeyRef:
-              name: ts-config-secrets
-              key: mongo-db-url-spring
-      - name: redis
-        image: redis:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 6379
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "125m"
-          requests:
-            memory: "64Mi"
-            cpu: "125m"
+        - name: backend
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "local" 
+            - name: KAKAO_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: ts-config-secrets
+                  key: kakao-redirect-uri
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: ts-config-secrets
+                  key: redis-port
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ts-config-secrets
+                  key: redis-host
+            - name: MONGO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ts-config-secrets
+                  key: mongo-db-url-spring
+            - name: AI_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ts-config-secrets
+                  key: ai-host
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 10"]
+          readinessProbe:
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 5
+          livenessProbe:
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 5
+        - name: redis
+          image: redis:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 6379
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "125m"
+            requests:
+              memory: "64Mi"
+              cpu: "125m"
