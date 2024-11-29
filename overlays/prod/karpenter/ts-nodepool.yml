@@ -2,6 +2,7 @@ apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
 <<<<<<< HEAD
+<<<<<<< HEAD
   name: ts-nodepool
   namespace: karpenter
 spec:
@@ -12,6 +13,10 @@ spec:
         alpha.eksctl.io/nodegroup-name: ts-karpenter-ng
 =======
   name: default
+=======
+  name: ts-nodepool
+  namespace: karpenter
+>>>>>>> 33896f9 (Chore: namespace 추가)
 spec:
   template:
 >>>>>>> f83c4b7 (Feat: 리소스 설정 추가 및 EC2 인스턴스 관리 구성)
