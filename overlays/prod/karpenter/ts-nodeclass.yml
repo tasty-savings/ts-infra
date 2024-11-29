@@ -24,6 +24,9 @@ metadata:
   name: ts-ec2nodeclass
   namespace: karpenter
 spec:
+  instanceTypes:
+    - t2.micro
+    - t2.medium
   amiFamily: AL2
   role: "ts-karpenter-role" # arn:aws:iam::<ACCOUNT_ID>:role/ts-karpenter-role
   subnetSelectorTerms:
