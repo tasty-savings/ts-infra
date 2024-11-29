@@ -1,7 +1,8 @@
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
-  name: default
+  name: ts-nodepool
+  namespace: karpenter
 spec:
   template:
     spec:
