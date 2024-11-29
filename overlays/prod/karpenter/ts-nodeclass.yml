@@ -1,7 +1,8 @@
 apiVersion: karpenter.k8s.aws/v1
 kind: EC2NodeClass # Provisioner
 metadata:
-  name: default
+  name: ts-ec2nodeclass
+  namespace: karpenter
 spec:
   amiFamily: AL2
   role: "ts-karpenter-role" # arn:aws:iam::<ACCOUNT_ID>:role/ts-karpenter-role
