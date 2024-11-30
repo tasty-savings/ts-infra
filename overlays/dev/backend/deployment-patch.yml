@@ -58,15 +58,15 @@ spec:
               exec:
                 command: ["sh", "-c", "sleep 10"]
           readinessProbe:
-            initialDelaySeconds: 40
-            periodSeconds: 10
-            timeoutSeconds: 3
-            failureThreshold: 5
+            initialDelaySeconds: 40  # probe 대기 시간
+            periodSeconds: 10  # probe 실행 주기
+            timeoutSeconds: 10  # probe 응답 기다리는 시간
+            failureThreshold: 10  # probe 몇 번 시도 할 건지
           livenessProbe:
             initialDelaySeconds: 40
             periodSeconds: 10
-            timeoutSeconds: 3
-            failureThreshold: 5
+            timeoutSeconds: 10
+            failureThreshold: 10
         - name: redis
           image: redis:latest
           imagePullPolicy: Always
