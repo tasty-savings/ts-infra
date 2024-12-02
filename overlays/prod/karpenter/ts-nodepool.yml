@@ -4,6 +4,8 @@ metadata:
   name: ts-nodepool
   namespace: karpenter
 spec:
+  cluster:
+    name: ts-eks
   template:
     spec:
       requirements:
@@ -26,6 +28,8 @@ spec:
         group: karpenter.k8s.aws
         kind: EC2NodeClass
         name: ts-ec2nodeclass
+      labels:
+        nodegroup: karpenter
       expireAfter: 720h
   limits:
     cpu: 500
