@@ -1,0 +1,36 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: ts-karpenter
+  namespace: karpenter
+  region: ap-northeast-2
+  version: "1.31"
+  tags:
+    karpenter.sh/discovery: ts-karpenter
+
+iam:
+  withOIDC: true
+  podIdentityAssociations:
+  - namespace: "karpenter"
+    serviceAccountName: karpenter
+    roleName: ts-karpenter-role
+    permissionPolicyARNs:
+    - arn:aws:iam::637423620662:policy/KarpenterControllerPolicy-ts-karpenter # IAM 정책
+
+iamIdentityMappings:
+- arn: "arn:aws:iam::637423620662:role/ts-karpenter-role" # IAM 역할
+  username: system:node:{{EC2PrivateDNSName}}
+  groups:
+  - system:bootstrappers
+  - system:nodes
+
+managedNodeGroups:
+- instanceType: t2.medium
+  amiFamily: AmazonLinux2
+  name: ts-karpenter-ng
+  desiredCapacity: 2
+  minSize: 1
+  maxSize: 3
+
+addons:
+- name: eks-pod-identity-agent
