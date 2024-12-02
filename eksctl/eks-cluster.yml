@@ -4,24 +4,30 @@ kind: ClusterConfig
 metadata:
   name: ts-eks   # 클러스터 이름
   region: ap-northeast-2     # AWS 리전
-  version: "1.30"        # Kubernetes 버전
+  version: "1.31"        # Kubernetes 버전
 
 vpc:
-  id: vpc-0404c819d238b58cd
+  id: vpc-02b79fa07789d712e
   subnets:
     public:
       ap-northeast-2a:
-        id: subnet-030adf75801ace0b0
+        id: subnet-09f2cb9f48dc32462
       ap-northeast-2b:
-        id: subnet-074c2378fe8d98c55
-    private:
-      ap-northeast-2a:
-        id: subnet-03d0636ec23f2dedd
-      ap-northeast-2b:
-        id: subnet-03873b6292d53455b
+        id: subnet-0b0f584287b22e2c8
+    # private:
+    #   ap-northeast-2a:
+    #     id: subnet-03d0636ec23f2dedd
+    #   ap-northeast-2b:
+    #     id: subnet-03873b6292d53455b
 
 iam:
   withOIDC: true   # OIDC(계정 연동)를 활성화하여 서비스 계정과 IAM 역할 연결
+  podIdentityAssociations:
+    - namespace: "karpenter"
+      serviceAccountName: karpenter
+      roleName: ts-karpenter-role
+      permissionPolicyARNs:
+      - arn:aws:iam::637423620662:policy/KarpenterControllerPolicy-ts-karpenter # IAM 정책
   serviceAccounts:  # 필요한 서비스 계정 생성
     - metadata:
         name: cluster-autoscaler
@@ -30,6 +36,17 @@ iam:
         - arn:aws:iam::aws:policy/AutoScalingFullAccess
       roleName: eks-cluster-autoscaler
 
+iamIdentityMappings:
+  - arn: "arn:aws:iam::637423620662:role/ts-karpenter-role" # IAM 역할
+    username: system:node:{{EC2PrivateDNSName}}
+    groups:
+    - system:bootstrappers
+    - system:nodes
+
+  # serviceAccounts:
+  #   - matadata: # ALB 서비스 계정
+  #     name: 
+
 addons:
   - name: vpc-cni
     version: latest   # 네트워크 플러그인
@@ -37,91 +54,39 @@ addons:
     version: latest  # DNS 서버
   - name: kube-proxy
     version: latest  # 네트워크 프록시
+  - name: eks-pod-identity-agent
   # - name: aws-load-balancer-controller
-  #   version: latest # ALB 및 NLB 관리 #제외 -> Helm Chart로 관리
+  #   version: latest # ALB 및 NLB 관리 #제외 -> 매니페스트 파일로 관리
 
 cloudWatch:
   clusterLogging:
-    enableTypes: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+    enableTypes: ["api", "scheduler"]
 
 nodeGroups:
-  - name: frontend-nodes
+  - name: autoscaler-ng
     instanceType: t2.medium
     desiredCapacity: 1
     minSize: 1
     maxSize: 3
-    volumeSize: 20
-    #subnet 수정
-    subnets: 
-      - subnet-030adf75801ace0b0
-    labels: {role: frontend, environment: production}
+    volumeSize: 30
+    labels: {role: autoscaler, environment: production}
     tags:
-      Name: frontend-nodes
+      Name: autoscaler-nodes
     iam:
       withAddonPolicies:
         autoScaler: true
         externalDNS: true
-        # deprecated
-        # albIngress: true
         awsLoadBalancerController: true
-    taints:   # 노드 taint 설정 (특정 워크로드에만 사용)
-      - key: "role"
-        value: "frontend"
-        effect: "NoSchedule"
     ssh:
       allow: true
       publicKeyName: ktb-TSP  # SSH 키 설정
-  
-  - name: backend-nodes
+managedNodeGroups:
+  - name: ts-karpenter-ng
     instanceType: t2.medium
-    desiredCapacity: 1
+    amiFamily: AmazonLinux2
+    desiredCapacity: 2
     minSize: 1
     maxSize: 3
-    volumeSize: 40
-    #subnet 수정
-    subnets: 
-      - subnet-03d0636ec23f2dedd
-    #노드가 프라이빗 서브넷에 배치되도록 설정
-    privateNetworking: true
-    labels: {role: backend, environment: production}
-    tags:
-      Name: backend-nodes
-    iam:
-      withAddonPolicies:
-        autoScaler: true
-        externalDNS: true
-        awsLoadBalancerController: true
-    taints:   # 노드 taint 설정 (특정 워크로드에만 사용)
-      - key: "role"
-        value: "backend"
-        effect: "NoSchedule"
-    ssh:
-      allow: true
-      publicKeyName: ktb-TSP  # SSH 키 설정
-
-  - name: ai-nodes
-    instanceType: t2.micro
-    desiredCapacity: 1
-    minSize: 1
-    maxSize: 3
-    volumeSize: 20
-    #subnet 수정
-    subnets: 
-      - subnet-03d0636ec23f2dedd
-    #노드가 프라이빗 서브넷에 배치되도록 설정
-    privateNetworking: true
-    labels: {role: ai, environment: production}
-    tags:
-      Name: ai-nodes
-    iam:
-      withAddonPolicies:
-        autoScaler: true
-        externalDNS: true
-        awsLoadBalancerController: true
-    taints:   # 노드 taint 설정 (특정 워크로드에만 사용)
-      - key: "role"
-        value: "ai"
-        effect: "NoSchedule"
-    ssh:
-      allow: true
-      publicKeyName: ktb-TSP  # SSH 키 설정
+    # labels:
+    #   nodegroup: karpenter
+    #   environment: production
