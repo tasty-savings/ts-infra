@@ -16,5 +16,3 @@ spec:
   securityGroupSelectorTerms:
     - tags:
         karpenter.sh/discovery: "ts-karpenter"
-  amiSelectorTerms:
-    - id: "ami-090a5c6f86b8b8c75"
