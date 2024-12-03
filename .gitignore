@@ -1,1 +1,4 @@
 aws-secret.yml
+controller-policy.json
+controller-trust-policy.json
+karpenter-trust-policy.json
