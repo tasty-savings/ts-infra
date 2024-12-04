@@ -5,11 +5,30 @@ metadata:
   labels:
     app: tasty-savings-frontend
 spec:
-  replicas: 2
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasty-savings-frontend  # 파드를 선택할 레이블
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
+    metadata:
+      labels:
+        app: tasty-savings-frontend
     spec:
-      nodeSelector:
-        role: frontend
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodegroup
+                    operator: In
+                    values:
+                      - karpenter
+      terminationGracePeriodSeconds: 30
       containers:
         - name: frontend
           # resources:
@@ -19,7 +38,4 @@ spec:
           #   requests:
           #     memory: "128Mi"
           #     cpu: "250m"
-          tolerations:
-            - key: "role"
-              value: "frontend"
-              effect: "NoSchedule"
+      
