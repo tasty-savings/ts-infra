@@ -8,7 +8,12 @@ spec:
     name: ts-eks
   template:
     spec:
+      labels:
+        nodegroup: karpenter
       requirements:
+        - key: nodegroup
+          operator: In
+          values: ["karpenter"] # karpenter가 생성하는 노드에 레이블 추가
         - key: kubernetes.io/arch
           operator: In
           values: ["amd64"]
@@ -28,8 +33,6 @@ spec:
         group: karpenter.k8s.aws
         kind: EC2NodeClass
         name: ts-ec2nodeclass
-      labels:
-        nodegroup: karpenter
       expireAfter: 720h
   limits:
     cpu: 500
