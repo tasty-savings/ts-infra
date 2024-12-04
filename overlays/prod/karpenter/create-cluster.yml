@@ -15,10 +15,10 @@ iam:
     serviceAccountName: karpenter
     roleName: ts-karpenter-role
     permissionPolicyARNs:
-    - arn:aws:iam::637423620662:policy/KarpenterControllerPolicy-ts-karpenter # IAM 정책
+    - arn:aws:iam::637423620662:policy/KarpenterControllerPolicy-ts-eks # IAM 정책
 
 iamIdentityMappings:
-- arn: "arn:aws:iam::637423620662:role/ts-karpenter-role" # IAM 역할
+- arn: "arn:aws:iam::637423620662:role/KarpenterControllerPolicy-ts-eks" # IAM 역할
   username: system:node:{{EC2PrivateDNSName}}
   groups:
   - system:bootstrappers
