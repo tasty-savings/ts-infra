@@ -4,16 +4,15 @@ metadata:
   name: ts-nodepool
   namespace: karpenter
 spec:
-  cluster:
-    name: ts-eks
   template:
-    spec:
+    metadata:
       labels:
-        nodegroup: karpenter
+        nodegroup: karpenter # 노드에 추가할 레이블
+    spec:
       requirements:
         - key: nodegroup
           operator: In
-          values: ["karpenter"] # karpenter가 생성하는 노드에 레이블 추가
+          values: ["karpenter"]
         - key: kubernetes.io/arch
           operator: In
           values: ["amd64"]
