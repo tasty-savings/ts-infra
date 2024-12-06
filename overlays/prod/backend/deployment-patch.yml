@@ -61,6 +61,11 @@ spec:
             secretKeyRef:
               name: ts-config-secrets
               key: ai-host
+        - name: FRONT_HOST
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: front-host
       - name: redis
         image: redis:latest
         imagePullPolicy: Always
