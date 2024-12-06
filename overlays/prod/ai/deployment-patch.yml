@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: ai-deployment
   labels:
-    app: tasty-savings-backend
+    app: tasty-savings-ai
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tasty-savings-backend  # 파드를 선택할 레이블
+      app: tasty-savings-ai  # 파드를 선택할 레이블
   template:
     metadata:
       labels:
-        app: tasty-savings-backend  # 파드의 레이블 (selector와 일치)
+        app: tasty-savings-ai  # 파드의 레이블 (selector와 일치)
     spec:
       affinity:
         nodeAffinity:
@@ -25,51 +25,47 @@ spec:
                       - karpenter
       terminationGracePeriodSeconds: 30
       containers:
-      - name: backend
+      - name: ai
         readinessProbe:
           httpGet:
-            path: /api/healthcheck # 헬스체크 경로
-            port: 8080
+            path: /ai/health-check # 헬스체크 경로
+            port: 5555
           initialDelaySeconds: 20 # 컨테이너 시작 후 첫 체크까지 대기 시간
           periodSeconds: 10 # 헬스 체크 간격
-          timeoutSeconds: 3 # 체크 타임 아웃 설정
+          timeoutSeconds: 30 # 체크 타임 아웃 설정
         env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: "local" 
-        - name: KAKAO_REDIRECT_URI
+        - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
               name: ts-config-secrets
-              key: kakao-redirect-uri
-        - name: REDIS_PORT
+              key: openai-api-key
+        - name: MONGO_DB_URL
           valueFrom:
             secretKeyRef:
               name: ts-config-secrets
-              key: redis-port
-        - name: REDIS_HOST
+              key: mongo-db-url
+        - name: MONGO_DB_NAME
           valueFrom:
             secretKeyRef:
               name: ts-config-secrets
-              key: redis-host
-        - name: MONGO_URL
+              key: mongo-db-name
+        - name: RECIPE_API
           valueFrom:
             secretKeyRef:
               name: ts-config-secrets
-              key: mongo-replicaset-url
-        - name: AI_HOST
+              key: recipe-api
+        - name: LANGFUSE_HOST
           valueFrom:
             secretKeyRef:
               name: ts-config-secrets
-              key: ai-host
-      - name: redis
-        image: redis:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 6379
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "125m"
-          requests:
-            memory: "64Mi"
-            cpu: "125m"
+              key: langfuse-host
+        - name: LANGFUSE_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: langfuse-public-key
+        - name: LANGFUSE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ts-config-secrets
+              key: langfuse-secret-key

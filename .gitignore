@@ -1,1 +1,17 @@
 aws-secret.yml
+
+# OS 생성 파일
+.DS_Store
+
+# Terraform 관련 파일
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+# SSH 키
+*.pem
+
+# 디버그 설정
+../../base/debug/
