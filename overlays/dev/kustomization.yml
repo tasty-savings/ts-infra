@@ -16,7 +16,7 @@ images:
   newTag: "116"
 - name: mo991207/ts-ai
   newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-ai
-  newTag: "52"
+  newTag: "62"
 
 helmCharts:
   - name: ingress-nginx
