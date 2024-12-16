@@ -495,10 +495,9 @@ spec:
               - key: karpenter.sh/ts-nodepool
                 operator: DoesNotExist
             # - matchExpressions:
-            #   - key: alpha.eksctl.io/nodegroup-name
-            #     operator: In
-            #     values:
-            #     - autoscaler-ng
+            #   - key: "alpha.eksctl.io/nodegroup-name"
+            #     operator: "In"
+            #     values: ["autoscaler-ng"]
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
