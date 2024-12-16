@@ -4,3 +4,6 @@ controller-trust-policy.json
 karpenter-trust-policy.json
 current-policy.json
 trust-policy.json
+terraform/generated
+terraform/.terraform.lock.hcl
+terraform/.terraform
