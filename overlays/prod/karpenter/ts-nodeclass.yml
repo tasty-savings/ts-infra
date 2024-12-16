@@ -9,7 +9,8 @@ spec:
   subnetSelectorTerms:
     - tags:
         karpenter.sh/discovery: "ts-eks"
-      availabilityZones: ["ap-northeast-2a", "ap-northeast-2b"]
   securityGroupSelectorTerms:
     - tags:
         karpenter.sh/discovery: "ts-eks"
+  amiSelectorTerms:
+    - id: "ami-090a5c6f86b8b8c75"
