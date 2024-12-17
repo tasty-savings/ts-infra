@@ -19,13 +19,13 @@ resources:
 images:
 - name: ssssuji/ts-back  # 기존 이미지 이름 -> base 리소스 , 기존 실행되던 이미지이름
   newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-backend  # 새로운 이미지 이름
-  newTag: "96"
+  newTag: "99"
 - name: ssssuji/ts-front
   newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-frontend
-  newTag: "112"
+  newTag: "116"
 - name: mo991207/ts-ai
   newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-ai
-  newTag: "52"
+  newTag: "68"
 helmCharts:
   - name: argo-cd
     releaseName: argocd
@@ -41,10 +41,10 @@ helmCharts:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
                 - matchExpressions:
-                    - key: nodegroup
+                    - key: alpha.eksctl.io/nodegroup-name
                       operator: In
                       values:
-                        - autoscaler
+                        - autoscaler-ng
       controller:
         replicaCount: 1
       configs:
@@ -61,79 +61,84 @@ helmCharts:
         #     backendProtocolVersion: "HTTP2"
         #     serviceType: "ClusterIP"
 
-  - name: loki-stack
-    releaseName: loki-stack
-    namespace: monitoring # 원하는 네임스페이스 지정
-    version: 2.10.2 # Loki Stack Helm 차트의 버전
-    repo: https://grafana.github.io/helm-charts
-    valuesInline:
-      test_pod:
-        enabled: false
-      loki:
-        # extraEnv:
-        #   - name: POD_IP
-        #     valueFrom:
-        #       fieldRef:
-        #         fieldPath: status.podIP
-        enabled: true
-        persistence:
-          enabled: true
-          storageClassName: gp2
-          accessModes:
-            - ReadWriteOnce
-          size: 1Gi
-        config:
-          # memberlist:
-          #   join_members:
-          #     - loki-stack-memberlist.monitoring.svc.cluster.local
-          #   bind_port: 7946
-          #   advertise_addr: ${POD_IP}
-          schema_config:
-            configs:
-              - from: "2022-01-01"
-                store: boltdb-shipper
-                object_store: filesystem
-                schema: v11
-                index:
-                  period: 24h
-                  prefix: loki_index_
-          storage_config:
-            boltdb_shipper:
-              active_index_directory: /data/loki/index
-              shared_store: filesystem
-          table_manager:
-            retention_deletes_enabled: true
-            retention_period: 168h # 7일
-        securityContext:
-          fsGroup: 1000
-          runAsUser: 1000
-          runAsGroup: 1000
-      promtail:
-        enabled: true # Promtail 활성화
-        config:
-          clients:
-            - url: http://loki-stack.monitoring.svc.cluster.local:3100/loki/api/v1/push
-          positions:
-            filename: /run/promtail/positions.yaml
-          scrape_configs:
-            - job_name: kubernetes-pods
-              kubernetes_sd_configs:
-                - role: pod
-              relabel_configs:
-                - source_labels: [__meta_kubernetes_namespace]
-                  action: replace
-                  target_label: namespace
-                - source_labels: [__meta_kubernetes_pod_name]
-                  action: replace
-                  target_label: pod
-                - source_labels: [__meta_kubernetes_container_name]
-                  action: replace
-                  target_label: container
-      prometheus:
-        enabled: true
-      grafana:
-        enabled: true
-        adminPassword: admin123
+  # - name: loki-stack
+  #   releaseName: loki-stack
+  #   namespace: monitoring # 원하는 네임스페이스 지정
+  #   version: 2.10.2 # Loki Stack Helm 차트의 버전
+  #   repo: https://grafana.github.io/helm-charts
+  #   valuesInline:
+  #     loki:
+  #       # extraEnv:
+  #       #   - name: POD_IP
+  #       #     valueFrom:
+  #       #       fieldRef:
+  #       #         fieldPath: status.podIP
+  #       enabled: true
+  #       persistence:
+  #         enabled: true
+  #         storageClassName: gp2
+  #         accessModes:
+  #           - ReadWriteOnce
+  #         size: 1Gi
+  #       config:
+  #         schema_config:
+  #           configs:
+  #             - from: "2022-01-01"
+  #               store: boltdb-shipper
+  #               object_store: filesystem
+  #               schema: v11
+  #               index:
+  #                 period: 24h
+  #                 prefix: loki_index_
+  #           extraEnv:
+  #             - name: MY_POD_IP
+  #               valueFrom:
+  #                 fieldRef:
+  #                   fieldPath: status.podIP
+  #           extraArgs:
+  #             - -config.expand-env=true
+  #         storage_config:
+  #           boltdb_shipper:
+  #             active_index_directory: /data/loki/index
+  #             shared_store: filesystem
+  #         table_manager:
+  #           retention_deletes_enabled: true
+  #           retention_period: 168h # 7일
+  #       securityContext:
+  #         fsGroup: 1000
+  #         runAsUser: 1000
+  #         runAsGroup: 1000
+  #     promtail:
+  #       enabled: true # Promtail 활성화
+  #       config:
+  #         clients:
+  #           - url: http://loki-stack.monitoring.svc.cluster.local:3100/loki/api/v1/push
+  #         positions:
+  #           filename: /run/promtail/positions.yaml
+  #         scrape_configs:
+  #           - job_name: kubernetes-pods
+  #             kubernetes_sd_configs:
+  #               - role: pod
+  #             relabel_configs:
+  #               - source_labels: [__meta_kubernetes_namespace]
+  #                 action: replace
+  #                 target_label: namespace
+  #               - source_labels: [__meta_kubernetes_pod_name]
+  #                 action: replace
+  #                 target_label: pod
+  #               - source_labels: [__meta_kubernetes_container_name]
+  #                 action: replace
+  #                 target_label: container
+  #     prometheus:
+  #       enabled: true
+  #     grafana:
+  #       enabled: true
+  #       adminPassword: admin123
+  #       grafana.ini:
+  #         server:
+  #           root_url: "https://ktb-project-domain.shop/grafana"
+  #           serve_from_sub_path: true
+
 patches:
   - target:
       kind: Deployment
