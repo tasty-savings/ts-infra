@@ -38,4 +38,10 @@ spec:
           #   requests:
           #     memory: "128Mi"
           #     cpu: "250m"
+          env:
+          - name: VITE_APP_KAKAO_KEY
+            valueFrom:
+              secretKeyRef:
+                name: ts-config-secrets
+                key: vite-app-kakao-key
       
