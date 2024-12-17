@@ -854,10 +854,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: nodegroup
+                  - key: alpha.eksctl.io/nodegroup-name
                     operator: In
                     values:
-                      - autoscaler
+                      - autoscaler-ng
       containers:
       - args:
         - --cluster-name=$(CLUSTER_NAME)
