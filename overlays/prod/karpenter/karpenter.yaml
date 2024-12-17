@@ -466,13 +466,14 @@ spec:
               protocol: TCP
           livenessProbe:
             initialDelaySeconds: 30
-            timeoutSeconds: 30
+            timeoutSeconds: 40
             httpGet:
               path: /healthz
               port: http
           readinessProbe:
-            initialDelaySeconds: 5
-            timeoutSeconds: 30
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 40
             httpGet:
               path: /readyz
               port: http
@@ -494,10 +495,6 @@ spec:
             - matchExpressions:
               - key: karpenter.sh/ts-nodepool
                 operator: DoesNotExist
-            # - matchExpressions:
-            #   - key: "alpha.eksctl.io/nodegroup-name"
-            #     operator: "In"
-            #     values: ["autoscaler-ng"]
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
