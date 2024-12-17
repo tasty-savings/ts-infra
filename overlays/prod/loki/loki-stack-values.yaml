@@ -25,6 +25,10 @@ loki:
       valueFrom:
         fieldRef:
           fieldPath: status.podIP
+  image:
+    repository: grafana/loki
+    tag: 2.8.1  # 여기서 원하는 버전으로 설정
+    pullPolicy: IfNotPresent
 
   extraArgs:
     config.expand-env: true
