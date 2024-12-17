@@ -28,6 +28,7 @@ resources:
   - ai/service.yml
 
   # #mongodb_statefulset 
+  - db-statefulset/storage-class.yml
   - db-statefulset/mongodb-headless-service.yml
   - db-statefulset/mongodb-statefulset.yml
 

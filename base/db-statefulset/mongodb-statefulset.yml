@@ -18,10 +18,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: nodegroup
+                  - key: alpha.eksctl.io/nodegroup-name
                     operator: In
                     values:
-                      - karpenter
+                      - autoscaler-ng
       containers:
         - name: mongo
           image: mongo:5.0
@@ -39,4 +39,4 @@ spec:
         resources:
           requests:
             storage: 1Gi
-        storageClassName: gp2
+        storageClassName: gp2-csi

@@ -1,9 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: debug-pod
+  name: debug
+  labels:
+    purpose: debug
 spec:
   containers:
-    - name: debug-container
-      image: alpine
-      command: ["sh", "-c", "sleep infinity"]
+    - name: busybox
+      image: busybox:latest
+      command:
+        - sleep
+        - "3600"
+      stdin: true
+      tty: true
