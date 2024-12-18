@@ -22,7 +22,7 @@ images:
   newTag: "108"
 - name: ssssuji/ts-front
   newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-frontend
-  newTag: "129"
+  newTag: "130"
 - name: mo991207/ts-ai
   newName: 637423620662.dkr.ecr.ap-northeast-2.amazonaws.com/ts-ai
   newTag: "69"
