@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki-stack
+  namespace: argocd  # ArgoCD가 설치된 네임스페이스
+spec:
+  project: default  # ArgoCD 프로젝트명 (기본값: default)
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 2.10.2  # loki-stack chart version
+    chart: loki-stack
+    helm:
+      valueFiles:
+        - https://github.com/tasty-savings/ts-infra/blob/main/overlays/prod/loki/loki-stack-values.yaml
+  destination:
+    server: https://kubernetes.default.svc  # 클러스터 API 서버 주소
+    namespace: loki  # Helm 차트를 배포할 네임스페이스
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true  # 네임스페이스가 없으면 자동 생성
