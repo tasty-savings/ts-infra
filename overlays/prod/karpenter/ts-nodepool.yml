@@ -8,9 +8,10 @@ spec:
     metadata:
       labels:
         nodegroup: karpenter # 노드에 추가할 레이블
+        alpha.eksctl.io/nodegroup-name: ts-karpenter-ng
     spec:
       requirements:
-        - key: nodegroup
+        - key: "nodegroup"
           operator: In
           values: ["karpenter"]
         - key: kubernetes.io/arch
@@ -24,17 +25,17 @@ spec:
           values: ["on-demand"]
         - key: karpenter.k8s.aws/instance-family
           operator: In
-          values: ["t2"] 
+          values: ["t2"]
         - key: karpenter.k8s.aws/instance-size
           operator: In
-          values: ["micro", "medium"]
+          values: ["small", "medium"]
       nodeClassRef:
         group: karpenter.k8s.aws
         kind: EC2NodeClass
         name: ts-ec2nodeclass
       expireAfter: 720h
   limits:
-    cpu: 500
+    cpu: 4
   disruption:
     consolidationPolicy: WhenEmptyOrUnderutilized
     consolidateAfter: 1m
