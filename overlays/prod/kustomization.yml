@@ -52,8 +52,8 @@ helmCharts:
           kustomize.buildOptions: "--enable-helm"
         params:
           server:
-            basehref: /argo-cd
-            rootpath: '/argo-cd'
+            basehref: "/argo-cd"
+            rootpath: "/argo-cd"
         # ingressGrpc:
         #   enabled: true
         #   isAWSALB: true
