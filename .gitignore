@@ -7,3 +7,4 @@ trust-policy.json
 terraform/generated
 terraform/.terraform.lock.hcl
 terraform/.terraform
+test/
