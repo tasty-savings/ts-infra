@@ -13,4 +13,4 @@ spec:
     - tags:
         karpenter.sh/discovery: "ts-eks"
   amiSelectorTerms:
-    - id: "ami-090a5c6f86b8b8c75"
+    - id: "ami-0ea66fbd857bd1152"
