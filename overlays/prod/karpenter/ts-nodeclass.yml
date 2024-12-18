@@ -13,4 +13,7 @@ spec:
     - tags:
         karpenter.sh/discovery: "ts-eks"
   amiSelectorTerms:
-    - id: "ami-0ea66fbd857bd1152"
+    - id: "ami-03d51fdf249b1a76f"
+  tags:
+    nodegroup: karpenter
+    alpha.eksctl.io/nodegroup-name: ts-karpenter-ng
