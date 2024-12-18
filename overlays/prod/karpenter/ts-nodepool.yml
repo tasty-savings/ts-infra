@@ -11,9 +11,9 @@ spec:
         alpha.eksctl.io/nodegroup-name: ts-karpenter-ng
     spec:
       requirements:
-        - key: "nodegroup"
-          operator: In
-          values: ["karpenter"]
+        # - key: "nodegroup"
+        #   operator: In
+        #   values: ["karpenter"]
         - key: kubernetes.io/arch
           operator: In
           values: ["amd64"]
@@ -29,13 +29,16 @@ spec:
         - key: karpenter.k8s.aws/instance-size
           operator: In
           values: ["small", "medium"]
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values: ["ap-northeast-2a", "ap-northeast-2b"]
       nodeClassRef:
         group: karpenter.k8s.aws
         kind: EC2NodeClass
         name: ts-ec2nodeclass
       expireAfter: 720h
   limits:
-    cpu: 4
+    cpu: 5
   disruption:
     consolidationPolicy: WhenEmptyOrUnderutilized
     consolidateAfter: 1m
