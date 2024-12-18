@@ -11,9 +11,6 @@ spec:
         alpha.eksctl.io/nodegroup-name: ts-karpenter-ng
     spec:
       requirements:
-        # - key: "nodegroup"
-        #   operator: In
-        #   values: ["karpenter"]
         - key: kubernetes.io/arch
           operator: In
           values: ["amd64"]
