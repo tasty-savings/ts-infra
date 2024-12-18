@@ -9,7 +9,7 @@ spec:
     - ReadWriteOnce
   storageClassName: manual
   hostPath:
-    path: "/Users/mochang-il/Documents/ktb/TSP/mongo-tasty-saving-backup"  # BSON 파일이 저장된 백업 경로
+    path: "/Users/suji/KTB/tasty-savings/ts-mongo-backup"  # BSON 파일이 저장된 백업 경로
     type: DirectoryOrCreate  # hostPathType을 DirectoryOrCreate로 설정
 ---
 apiVersion: v1

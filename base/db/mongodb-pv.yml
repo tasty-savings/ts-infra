@@ -9,7 +9,7 @@ spec:
     - ReadWriteOnce
   storageClassName: manual
   hostPath:
-    path: "/Users/mochang-il/Documents/ktb/TSP/mongo-tasty-saving-data"  # 실제 데이터가 저장될 경로
+    path: "/Users/suji/KTB/tasty-savings/ts-mongo-data"  # 실제 데이터가 저장될 경로
     type: DirectoryOrCreate  # hostPathType을 DirectoryOrCreate로 설정
 ---
 apiVersion: v1

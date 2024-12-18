@@ -27,7 +27,11 @@ iam:
       serviceAccountName: karpenter
       roleName: ts-karpenter-role
       permissionPolicyARNs:
+<<<<<<< HEAD
       - arn:aws:iam::637423620662:policy/KarpenterControllerPolicy-ts-karpenter # IAM 정책
+=======
+      - arn:aws:iam::637423620662:policy/KarpenterControllerPolicy-ts-eks # IAM 정책
+>>>>>>> feature/TS-184
   serviceAccounts:  # 필요한 서비스 계정 생성
     - metadata:
         name: cluster-autoscaler
@@ -37,7 +41,11 @@ iam:
       roleName: eks-cluster-autoscaler
 
 iamIdentityMappings:
+<<<<<<< HEAD
   - arn: "arn:aws:iam::637423620662:role/ts-karpenter-role" # IAM 역할
+=======
+  - arn: "arn:aws:iam::637423620662:role/KarpenterControllerRole-ts-eks" # IAM 역할
+>>>>>>> feature/TS-184
     username: system:node:{{EC2PrivateDNSName}}
     groups:
     - system:bootstrappers

@@ -4,8 +4,17 @@ metadata:
   name: backend-deployment 
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 # 배포 중 사용할 수 없는 최대 파드 수
+      maxSurge: 1 # 배포 중 추가 생성할 수 있는 최대 파드 수
   template:
+    metadata:
+      labels:
+        app: tasty-savings-backend
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
       - name: backend
         imagePullPolicy: Always
