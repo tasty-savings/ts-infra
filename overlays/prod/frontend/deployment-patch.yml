@@ -6,6 +6,7 @@ metadata:
     app: tasty-savings-frontend
 spec:
   replicas: 1
+  revisionHistoryLimit: 7  # 최근 7개의 Revision만 유지
   selector:
     matchLabels:
       app: tasty-savings-frontend  # 파드를 선택할 레이블
