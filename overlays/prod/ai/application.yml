@@ -8,8 +8,6 @@ spec:
     repoURL: 'https://github.com/tasty-savings/ts-infra'
     targetRevision: feature/TS-202
     path: overlays/prod/ai
-    kustomize:
-      namePrefix: ai-
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
