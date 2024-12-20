@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: back-app
+  name: ai-app
 spec:
   project: default
   source:
     repoURL: 'https://github.com/tasty-savings/ts-infra'
     targetRevision: feature/TS-202
-    path: overlays/prod/backend
+    path: overlays/prod/ai
     kustomize:
-      namePrefix: back-
+      namePrefix: ai-
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
