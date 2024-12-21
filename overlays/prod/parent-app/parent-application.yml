@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: parent-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/tasty-savings/ts-infra'
+    targetRevision: feature/TS-202
+    path: overlays/prod/parent-app
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy: {}
+  
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frontend-application
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/tasty-savings/ts-infra'
+    targetRevision: feature/TS-202
+    path: overlays/prod/frontend
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy: {}
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend-application
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/tasty-savings/ts-infra'
+    targetRevision: feature/TS-202
+    path: overlays/prod/backend
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy: {}
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ai-application
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/tasty-savings/ts-infra'
+    targetRevision: feature/TS-202
+    path: overlays/prod/ai
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy: {}

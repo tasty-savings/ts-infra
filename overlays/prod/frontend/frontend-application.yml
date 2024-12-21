@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: front-app
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/tasty-savings/ts-infra'
+    targetRevision: feature/TS-202
+    path: overlays/prod/frontend
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy: {}

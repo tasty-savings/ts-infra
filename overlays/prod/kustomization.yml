@@ -15,6 +15,7 @@ resources:
   - ingress/ingress-argocd.yml
   # - autoscaler/service-account.yml
   # - autoscaler/cluster-autoscaler.yml
+  - frontend/nginx-config.yml
 
 images:
 - name: ssssuji/ts-back  # 기존 이미지 이름 -> base 리소스 , 기존 실행되던 이미지이름
@@ -52,8 +53,8 @@ helmCharts:
           kustomize.buildOptions: "--enable-helm"
         params:
           server:
-            basehref: /argo-cd
-            rootpath: '/argo-cd'
+            basehref: "/argo-cd"
+            rootpath: "/argo-cd"
         # ingressGrpc:
         #   enabled: true
         #   isAWSALB: true
