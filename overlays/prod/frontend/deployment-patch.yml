@@ -45,4 +45,12 @@ spec:
               secretKeyRef:
                 name: ts-config-secrets
                 key: vite-app-kakao-key
+          volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/nginx/conf.d/default.conf
+            subPath: default.conf
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
       

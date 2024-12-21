@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../base/frontend
+  - nginx-config.yml
 
 images:
 - name: ssssuji/ts-front
