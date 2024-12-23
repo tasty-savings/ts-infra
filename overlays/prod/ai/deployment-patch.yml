@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tasty-savings-ai
 spec:
-  replicas: 1
+  replicas: 3
   revisionHistoryLimit: 7  # 최근 7개의 Revision만 유지
   selector:
     matchLabels:
