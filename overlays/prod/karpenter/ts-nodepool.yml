@@ -1,8 +1,6 @@
 apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
-<<<<<<< HEAD
-<<<<<<< HEAD
   name: ts-nodepool
   namespace: karpenter
 spec:
@@ -13,15 +11,10 @@ spec:
       labels:
         nodegroup: karpenter # 노드에 추가할 레이블
         alpha.eksctl.io/nodegroup-name: ts-karpenter-ng
-=======
-  name: default
-=======
   name: ts-nodepool
   namespace: karpenter
->>>>>>> 33896f9 (Chore: namespace 추가)
 spec:
   template:
->>>>>>> f83c4b7 (Feat: 리소스 설정 추가 및 EC2 인스턴스 관리 구성)
     spec:
       requirements:
         - key: kubernetes.io/arch
@@ -35,7 +28,6 @@ spec:
           values: ["on-demand"]
         - key: karpenter.k8s.aws/instance-family
           operator: In
-<<<<<<< HEAD
           values: ["t2"]
         - key: karpenter.k8s.aws/instance-size
           operator: In
@@ -50,21 +42,6 @@ spec:
       expireAfter: 720h
   limits:
     cpu: 5
-=======
-          values: ["t2"] 
-        - key: karpenter.k8s.aws/instance-size
-          operator: In
-          values: ["micro", "medium"]
-      nodeClassRef:
-        group: karpenter.k8s.aws
-        kind: EC2NodeClass
-        name: ts-ec2nodeclass
-      labels:
-        nodegroup: karpenter
-      expireAfter: 720h
-  limits:
-    cpu: 500
->>>>>>> f83c4b7 (Feat: 리소스 설정 추가 및 EC2 인스턴스 관리 구성)
   disruption:
     consolidationPolicy: WhenEmptyOrUnderutilized
     consolidateAfter: 1m
