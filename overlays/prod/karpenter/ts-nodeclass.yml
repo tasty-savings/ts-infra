@@ -1,5 +1,4 @@
 apiVersion: karpenter.k8s.aws/v1
-<<<<<<< HEAD
 kind: EC2NodeClass
 metadata:
   name: ts-ec2nodeclass
@@ -18,24 +17,3 @@ spec:
   tags:
     nodegroup: karpenter
     alpha.eksctl.io/nodegroup-name: ts-karpenter-ng
-=======
-kind: EC2NodeClass # Provisioner
-metadata:
-  name: ts-ec2nodeclass
-  namespace: karpenter
-spec:
-  instanceTypes:
-    - t2.micro
-    - t2.medium
-  amiFamily: AL2
-  role: "ts-karpenter-role" # arn:aws:iam::<ACCOUNT_ID>:role/ts-karpenter-role
-  subnetSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: "ts-karpenter"
-      availabilityZones: ["ap-northeast-2a", "ap-northeast-2b"]
-  securityGroupSelectorTerms:
-    - tags:
-        karpenter.sh/discovery: "ts-karpenter"
-  amiSelectorTerms:
-    - id: "ami-090a5c6f86b8b8c75"
->>>>>>> cebc912 (Feat: 프로비저닝할 노드 그룹의 속성 정의)
